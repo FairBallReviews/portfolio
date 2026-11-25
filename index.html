@@ -1,0 +1,660 @@
+<title>JS Smith, Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: numbered-chapter scroll. Clean near-white base, tinted section bands,
+     three-color system (indigo primary, coral secondary, mint positive) + yellow marker.
+     Archivo display + Inter body + JetBrains Mono labels. Results are the hero. */
+  :root {
+    --paper: #fbfbfd;
+    --surface: #ffffff;
+    --surface-2: #f1f1f6;
+    --tint-indigo: #eceeff;
+    --tint-warm: #fff1ec;
+    --tint-mint: #e8f7f0;
+    --ink: #16161d;
+    --ink-soft: #43444f;
+    --muted: #6f707b;
+    --faint: #9a9aa6;
+    --line: #e7e7f0;
+    --line-2: #d6d6e1;
+    --accent: #3042e6;
+    --accent-2: #2130c2;
+    --warm: #ff5a35;
+    --warm-2: #e5431f;
+    --mint: #0f9f68;
+    --good: #0f9f68;
+    --hl: #ffd23f;
+    --contact-bg: #15173c;
+    --contact-fg: #f3f3fb;
+    --maxw: 1140px;
+    --f-disp: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0c0c11;
+      --surface: #15151d;
+      --surface-2: #1b1b24;
+      --tint-indigo: #15172f;
+      --tint-warm: #241512;
+      --tint-mint: #0e241b;
+      --ink: #f2f2f7;
+      --ink-soft: #c5c6d0;
+      --muted: #8c8d98;
+      --faint: #5e5f6b;
+      --line: #24242e;
+      --line-2: #31313d;
+      --accent: #8a97ff;
+      --accent-2: #a3afff;
+      --warm: #ff7d5c;
+      --warm-2: #ff9173;
+      --mint: #3fcf8e;
+      --good: #3fcf8e;
+      --hl: #ffd23f;
+      --contact-bg: #0f1030;
+      --contact-fg: #f2f2f8;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0c0c11;
+    --surface: #15151d;
+    --surface-2: #1b1b24;
+    --tint-indigo: #15172f;
+    --tint-warm: #241512;
+    --tint-mint: #0e241b;
+    --ink: #f2f2f7;
+    --ink-soft: #c5c6d0;
+    --muted: #8c8d98;
+    --faint: #5e5f6b;
+    --line: #24242e;
+    --line-2: #31313d;
+    --accent: #8a97ff;
+    --accent-2: #a3afff;
+    --warm: #ff7d5c;
+    --warm-2: #ff9173;
+    --mint: #3fcf8e;
+    --good: #3fcf8e;
+    --hl: #ffd23f;
+    --contact-bg: #0f1030;
+    --contact-fg: #f2f2f8;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .wrap {
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding-left: max(22px, env(safe-area-inset-left, 0px));
+    padding-right: max(22px, env(safe-area-inset-right, 0px));
+  }
+  h1, h2, h3, h4 { font-family: var(--f-disp); font-weight: 700; line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  a { color: inherit; }
+  .mono { font-family: var(--f-mono); }
+  .tnum { font-variant-numeric: tabular-nums; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ---------- Header ---------- */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--paper); z-index: 60; }
+  header.site { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(10px) saturate(1.3); border-bottom: 1px solid var(--line); }
+  .site-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 13px; }
+  .brand { display: inline-flex; align-items: center; gap: 11px; font-family: var(--f-disp); font-weight: 700; font-size: 1.02rem; letter-spacing: -0.01em; }
+  .glyph { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 0.74rem; font-weight: 800; letter-spacing: -0.02em; flex: none; }
+  .status { display: inline-flex; align-items: center; gap: 7px; font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.02em; color: var(--muted); text-transform: uppercase; }
+  .status .led { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 60%, transparent); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 55%, transparent); } 70% { box-shadow: 0 0 0 7px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+  nav.idx { display: flex; align-items: center; gap: 20px; }
+  nav.idx a { text-decoration: none; font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.02em; color: var(--muted); text-transform: uppercase; padding: 4px 0; border-bottom: 1.5px solid transparent; transition: color .15s, border-color .15s; }
+  nav.idx a:hover { color: var(--ink); border-color: var(--accent); }
+  @media (max-width: 800px) { nav.idx a { display: none; } .status { display: none; } }
+  .tgl { appearance: none; border: 1px solid var(--line-2); background: var(--surface); color: var(--muted); width: 34px; height: 34px; border-radius: 9px; cursor: pointer; display: grid; place-items: center; font-size: 15px; flex: none; }
+  .tgl:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- Chapter label ---------- */
+  .chap { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 10px; }
+  .chap::before { content: ""; width: 26px; height: 1.5px; background: var(--accent); }
+
+  section { padding-block: clamp(56px, 9vw, 120px); position: relative; }
+  .sec-head { display: flex; flex-direction: column; gap: 18px; margin-bottom: clamp(36px, 5vw, 64px); }
+  .sec-head h2 { font-size: clamp(2rem, 5.2vw, 3.4rem); font-weight: 800; }
+  .sec-head .dek { color: var(--muted); max-width: 56ch; font-size: clamp(1rem, 1.5vw, 1.12rem); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-top: clamp(40px, 7vw, 76px); padding-bottom: clamp(44px, 7vw, 84px); }
+  .hero .kick { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  .hero .kick b { color: var(--ink); font-weight: 600; }
+  .hero .kick .dotw { color: var(--warm); }
+  .hero h1 { font-size: clamp(2rem, 11vw, 6rem); font-weight: 800; letter-spacing: -0.035em; }
+  .hero h1 .mark { position: relative; white-space: nowrap; }
+  .hero h1 .mark::after { content: ""; position: absolute; left: -0.04em; right: -0.04em; bottom: 0.06em; height: 0.32em; background: var(--hl); z-index: -1; transform: scaleX(0); transform-origin: left; animation: wipe 0.9s cubic-bezier(.2,.7,.2,1) 0.35s forwards; }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  @keyframes wipe { to { transform: scaleX(1); } }
+  .hero .sub { margin-top: 30px; font-size: clamp(1.08rem, 2vw, 1.4rem); color: var(--ink-soft); max-width: 50ch; line-height: 1.5; }
+  .hero .sub .by { color: var(--ink); font-weight: 600; }
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 38px; }
+  .btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-weight: 600; font-size: 0.94rem; padding: 13px 22px; border-radius: 11px; border: 1.5px solid transparent; cursor: pointer; transition: transform .12s, background .15s, border-color .15s, color .15s; }
+  .btn:active { transform: translateY(1px); }
+  .btn.solid { background: var(--accent); color: #fff; }
+  .btn.solid:hover { background: var(--accent-2); }
+  .btn.line { background: transparent; color: var(--ink); border-color: var(--line-2); }
+  .btn.line:hover { border-color: var(--accent); color: var(--accent); }
+  .btn svg { width: 17px; height: 17px; }
+  .copyline { display: inline-flex; align-items: center; gap: 9px; font-family: var(--f-mono); font-size: 0.82rem; color: var(--muted); }
+  .copyline code { color: var(--ink); }
+  .cbtn { appearance: none; border: 1px solid var(--line-2); background: var(--surface); color: var(--muted); border-radius: 7px; padding: 4px 9px; font-family: var(--f-mono); font-size: 0.68rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.03em; }
+  .cbtn:hover { color: var(--accent); border-color: var(--accent); }
+  .email-slot { display: inline-flex; align-items: center; gap: 9px; }
+  .copyline .emaillink { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+  .copyline .emaillink:hover { color: var(--accent); border-color: var(--accent); }
+
+  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 56px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .hs { background: var(--surface); padding: 22px 22px 24px; border-top: 3px solid var(--line-2); }
+  .hs:nth-child(1) { border-top-color: var(--accent); }
+  .hs:nth-child(2) { border-top-color: var(--warm); }
+  .hs:nth-child(3) { border-top-color: var(--mint); }
+  .hs .n { font-family: var(--f-disp); font-weight: 800; font-size: clamp(1.9rem, 4.4vw, 2.9rem); letter-spacing: -0.03em; line-height: 1; }
+  .hs:nth-child(1) .n { color: var(--accent); }
+  .hs:nth-child(2) .n { color: var(--warm); }
+  .hs:nth-child(3) .n { color: var(--mint); }
+  .hs .n em { color: inherit; font-style: normal; }
+  .hs .l { margin-top: 11px; font-size: 0.86rem; color: var(--muted); }
+  @media (max-width: 680px) { .hero-stats { grid-template-columns: 1fr; } }
+
+  /* ---------- Case studies ---------- */
+  #work { background: var(--tint-indigo); }
+  .cases { display: flex; flex-direction: column; gap: clamp(26px, 4vw, 48px); }
+  .case { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: clamp(24px, 3.4vw, 46px); display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(26px, 4vw, 60px); align-items: start; box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent); }
+  @media (max-width: 860px) { .case { grid-template-columns: 1fr; gap: 30px; } }
+  .case .idx { font-family: var(--f-mono); font-size: 0.74rem; color: var(--accent); letter-spacing: 0.08em; }
+  .case .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+  .case .tags span { font-family: var(--f-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-soft); background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; }
+  .case h3 { font-size: clamp(1.5rem, 3vw, 2.15rem); font-weight: 800; margin-top: 16px; }
+  .case .org { font-family: var(--f-mono); font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 12px; }
+  .smr { margin-top: 22px; display: grid; gap: 15px; }
+  .smr .row { display: grid; grid-template-columns: 78px 1fr; gap: 14px; }
+  .smr .row .t { font-family: var(--f-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); padding-top: 3px; }
+  .smr .row.res .t { color: var(--warm); }
+  .smr .row p { color: var(--ink-soft); font-size: 0.96rem; }
+  .smr .row.res p { color: var(--ink); font-weight: 500; }
+
+  .viz { background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: clamp(20px, 3vw, 30px); align-self: stretch; display: flex; flex-direction: column; justify-content: center; min-height: 260px; }
+  .viz .cap { font-family: var(--f-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.04em; margin-top: 18px; line-height: 1.5; }
+  .bignum { font-family: var(--f-disp); font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; color: var(--accent); font-size: clamp(3.2rem, 9vw, 5.4rem); }
+  .viz.warmtone .bignum { color: var(--warm); }
+  .bignum .u { font-size: 0.42em; color: var(--ink); letter-spacing: -0.01em; }
+  .subn { margin-top: 10px; font-size: 0.92rem; color: var(--ink-soft); }
+
+  /* waterfall / bridge */
+  .bridge { display: flex; align-items: flex-end; gap: 10px; height: 170px; }
+  .bridge .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px; height: 100%; }
+  .bridge .bar { width: 100%; border-radius: 6px 6px 3px 3px; height: var(--h, 20%); transition: height .9s cubic-bezier(.2,.7,.2,1); }
+  .bridge .bar.base { background: var(--line-2); }
+  .bridge .bar.lever { background: color-mix(in srgb, var(--accent) 50%, var(--surface)); }
+  .bridge .bar.total { background: var(--warm); }
+  .bridge .bl { font-family: var(--f-mono); font-size: 0.6rem; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: 0.02em; }
+  .bridge.animate .bar { height: 0; }
+
+  /* before/after bars */
+  .ba { display: grid; gap: 20px; }
+  .ba .item { display: grid; gap: 7px; }
+  .ba .lab { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  .ba .lab b { color: var(--ink); font-weight: 700; font-size: 1.02rem; font-family: var(--f-disp); letter-spacing: -0.02em; }
+  .ba .track { height: 16px; border-radius: 8px; background: var(--line); overflow: hidden; }
+  .ba .fill { height: 100%; border-radius: 8px; width: var(--w, 50%); transition: width 1s cubic-bezier(.2,.7,.2,1); }
+  .ba .fill.old { background: var(--line-2); }
+  .ba .fill.new { background: var(--accent); }
+  .viz.warmtone .ba .fill.new { background: var(--warm); }
+  .ba.animate .fill { width: 0; }
+
+  /* growth line (svg) */
+  .spark { width: 100%; height: auto; display: block; overflow: visible; }
+  .spark .ln { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .spark .dot { fill: var(--accent); }
+  .spark .base { stroke: var(--line-2); stroke-width: 1.5; stroke-dasharray: 3 4; }
+
+  /* ---------- Receipts ---------- */
+  .receipts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  @media (max-width: 820px) { .receipts { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .receipts { grid-template-columns: 1fr; } }
+  .rc { background: var(--surface); padding: 30px 26px; display: flex; flex-direction: column; gap: 10px; }
+  .rc .n { font-family: var(--f-disp); font-weight: 800; font-size: clamp(2.1rem, 5vw, 3rem); letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+  .rc:nth-child(3n+1) .n { color: var(--accent); }
+  .rc:nth-child(3n+2) .n { color: var(--warm); }
+  .rc:nth-child(3n+3) .n { color: var(--mint); }
+  .rc .n em { color: inherit; font-style: normal; }
+  .rc .d { font-size: 0.94rem; color: var(--ink-soft); }
+  .rc .src { font-family: var(--f-mono); font-size: 0.66rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.04em; margin-top: auto; }
+
+  /* ---------- Approach ---------- */
+  #approach { background: var(--tint-warm); }
+  .appr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 820px) { .appr { grid-template-columns: 1fr; } }
+  .ac { border: 1px solid var(--line); border-left: 3px solid var(--line-2); border-radius: 14px; padding: 28px; background: var(--surface); }
+  .ac:nth-child(3n+1) { border-left-color: var(--accent); }
+  .ac:nth-child(3n+2) { border-left-color: var(--warm); }
+  .ac:nth-child(3n+3) { border-left-color: var(--mint); }
+  .ac .no { font-family: var(--f-mono); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; }
+  .ac:nth-child(3n+1) .no { color: var(--accent); }
+  .ac:nth-child(3n+2) .no { color: var(--warm); }
+  .ac:nth-child(3n+3) .no { color: var(--mint); }
+  .ac h3 { font-size: 1.16rem; font-weight: 700; margin-top: 14px; }
+  .ac p { margin-top: 10px; color: var(--muted); font-size: 0.92rem; }
+
+  /* ---------- Path (timeline) ---------- */
+  #path { background: var(--surface-2); }
+  .path { display: grid; gap: 0; }
+  .pe { display: grid; grid-template-columns: 128px 1fr auto; gap: 24px; align-items: baseline; padding-block: 22px; border-top: 1px solid var(--line-2); }
+  .pe:first-child { border-top: none; }
+  .pe .yr { font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted); letter-spacing: 0.02em; }
+  .pe .role { font-family: var(--f-disp); font-weight: 700; font-size: 1.08rem; letter-spacing: -0.02em; }
+  .pe .co { color: var(--muted); font-size: 0.9rem; margin-top: 3px; }
+  .pe .pin { font-family: var(--f-mono); font-size: 0.74rem; color: var(--accent); text-align: right; white-space: nowrap; }
+  .pe:nth-child(even) .pin { color: var(--warm); }
+  @media (max-width: 720px) { .pe { grid-template-columns: 1fr; gap: 4px; } .pe .pin { text-align: left; } }
+
+  /* ---------- Toolbox + creds ---------- */
+  .split { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(30px, 5vw, 64px); }
+  @media (max-width: 820px) { .split { grid-template-columns: 1fr; gap: 40px; } }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools span { font-family: var(--f-mono); font-size: 0.76rem; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 8px; padding: 6px 11px; background: var(--surface); transition: border-color .15s, color .15s; }
+  .tools span:hover { border-color: var(--accent); color: var(--accent); }
+  .cblock + .cblock { margin-top: 26px; }
+  .cblock h4 { font-family: var(--f-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 400; margin-bottom: 12px; }
+  .cblock ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .cblock li { font-size: 0.92rem; color: var(--ink-soft); }
+  .cblock li b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Contact ---------- */
+  #contact { background: var(--contact-bg); color: var(--contact-fg); }
+  #contact .chap { color: var(--hl); }
+  #contact .chap::before { background: var(--hl); }
+  #contact h2 { font-size: clamp(2.3rem, 7vw, 4.6rem); font-weight: 800; color: var(--contact-fg); }
+  #contact .dek { color: color-mix(in srgb, var(--contact-fg) 72%, transparent); max-width: 48ch; margin-top: 20px; font-size: 1.08rem; }
+  .creach { display: grid; gap: 12px; margin-top: 42px; max-width: 580px; }
+  .cr { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; border: 1px solid color-mix(in srgb, var(--contact-fg) 20%, transparent); border-radius: 14px; }
+  .cr .k { font-family: var(--f-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--hl); }
+  .cr .v { color: var(--contact-fg); font-size: 1.02rem; margin-top: 4px; }
+  .cr .v a { color: var(--contact-fg); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--contact-fg) 40%, transparent); }
+  .cr .v a:hover { border-color: var(--hl); }
+  .cr .cbtn { background: transparent; border-color: color-mix(in srgb, var(--contact-fg) 28%, transparent); color: color-mix(in srgb, var(--contact-fg) 80%, transparent); }
+  .cr .cbtn:hover { color: var(--hl); border-color: var(--hl); }
+  footer.foot { color: color-mix(in srgb, var(--contact-fg) 55%, transparent); font-family: var(--f-mono); font-size: 0.74rem; padding-top: 40px; display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: space-between; }
+
+  .toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(18px); background: var(--ink); color: var(--paper); border: 1px solid var(--line-2); padding: 10px 18px; border-radius: 999px; font-family: var(--f-mono); font-size: 0.78rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 80; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, .hero h1 .mark::after, .bridge .bar, .ba .fill { animation: none !important; transition: none !important; }
+    .hero h1 .mark::after { transform: scaleX(1); }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<header class="site">
+  <div class="wrap site-in">
+    <span class="brand"><span class="glyph">JS</span>John-Scott W. Smith</span>
+    <nav class="idx">
+      <a href="#work">01 / Work</a>
+      <a href="#results">02 / Results</a>
+      <a href="#approach">03 / Approach</a>
+      <a href="#path">04 / Path</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <span class="status"><span class="led"></span>Open to director roles</span>
+      <button class="tgl" id="tgl" aria-label="Toggle theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="kick"><span>Digital strategy &amp; growth leader</span><span class="dotw">·</span><span><b>Richmond, VA</b></span><span class="dotw">·</span><span>Hospitality, fintech, regulated consumer</span></div>
+      <h1>I find the <em>revenue</em><br>strategy leaves <span class="mark">on the table.</span></h1>
+      <p class="sub">I run the numbers, make the call on where to spend and where to pull back, win the room, and own the outcome. <span class="by">John-Scott W. Smith,</span> fifteen years turning business goals into technical roadmaps that pay for themselves.</p>
+      <div class="cta-row">
+        <a class="btn solid" href="#work">See the work</a>
+        <a class="btn line" href="https://www.linkedin.com/in/John-ScottSmith" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          LinkedIn
+        </a>
+        <span class="copyline email-slot"><button class="cbtn reveal-email" type="button">Reveal email</button></span>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hs"><div class="n"><em>+$3.4M</em></div><div class="l">Revenue impact across my current tenure at Magna, from knowing when to spend and when to hold.</div></div>
+        <div class="hs"><div class="n">56</div><div class="l">Hotels I set the marketing vision for today, across Hilton, Marriott, Hyatt, and IHG flags.</div></div>
+        <div class="hs"><div class="n">$4.8<span style="font-size:0.5em;">MM</span></div><div class="l">Annual sales and marketing budget I own and reallocate as results come in.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="chap">01 / Selected work</span>
+        <h2>Four problems nobody had framed yet.</h2>
+        <p class="dek">Each of these started as a hunch that something was off. I diagnosed it, made the call on strategy and spend, won buy-in from leadership or ownership, and carried it to a number.</p>
+      </div>
+
+      <div class="cases">
+
+        <!-- CASE 1: Florida -->
+        <article class="case">
+          <div>
+            <div class="idx">Case 01</div>
+            <div class="tags"><span>Hospitality</span><span>Media mix</span><span>Turnaround</span></div>
+            <h3>Reading the comp set before the owners did</h3>
+            <div class="org">Magna Hospitality</div>
+            <div class="smr">
+              <div class="row"><div class="t">Situation</div><p>A South Florida beachfront hotel was quietly lagging its comp set, and a new ownership group was deciding whether to keep the management contract.</p></div>
+              <div class="row"><div class="t">Move</div><p>On my own research I pulled budget off OTAs and into display, social retargeting, and print timed to the property's real booking windows, then took the plan to ownership with the rate implications spelled out.</p></div>
+              <div class="row res"><div class="t">Result</div><p>Back to budget inside one quarter, +$338K in revenue, and the work helped save the management contract with the incoming owners.</p></div>
+            </div>
+          </div>
+          <div class="viz warmtone">
+            <div class="bridge animate" data-anim="bridge">
+              <div class="col"><div class="bar base" style="--h:34%"></div><div class="bl">Baseline<br>pace</div></div>
+              <div class="col"><div class="bar lever" style="--h:52%"></div><div class="bl">OTA<br>pullback</div></div>
+              <div class="col"><div class="bar lever" style="--h:74%"></div><div class="bl">Display +<br>retarget</div></div>
+              <div class="col"><div class="bar lever" style="--h:88%"></div><div class="bl">Timed<br>print</div></div>
+              <div class="col"><div class="bar total" style="--h:100%"></div><div class="bl">+$338K<br>Q1</div></div>
+            </div>
+            <div class="cap">Illustrative bridge of the levers behind the quarter. Source: property P&amp;L and pacing, first quarter after the shift.</div>
+          </div>
+        </article>
+
+        <!-- CASE 2: Homes.com -->
+        <article class="case">
+          <div>
+            <div class="idx">Case 02</div>
+            <div class="tags"><span>Brand</span><span>Lifecycle</span><span>Growth</span></div>
+            <h3>From Zillow knock-off to a rebrand</h3>
+            <div class="org">Homes.com, CoStar Group</div>
+            <div class="smr">
+              <div class="row"><div class="t">Situation</div><p>The product had a muddy brand and a weak value proposition, reading to the market as a knock-off clone rather than a destination of its own.</p></div>
+              <div class="row"><div class="t">Move</div><p>I used AI to synthesize customer feedback, took a UX and marketing overhaul to the unit president that became a full rebrand, sat on the rebrand council, and led a small team building automated email, retargeting, and direct mail with decision gates.</p></div>
+              <div class="row res"><div class="t">Result</div><p>Monthly visits jumped +3,467% at relaunch and held near 325% sustained growth, pulling in more agent and consumer accounts.</p></div>
+            </div>
+          </div>
+          <div class="viz">
+            <div class="bignum tnum">+<span class="count" data-to="3467" data-dur="1400">3,467</span>%</div>
+            <div class="subn">Monthly visits at relaunch, roughly 325% sustained after.</div>
+            <svg class="spark" viewBox="0 0 320 110" role="img" aria-label="Steep growth curve at relaunch" data-anim="spark">
+              <line class="base" x1="0" y1="95" x2="320" y2="95"></line>
+              <path class="ln" d="M4 92 L70 90 L140 86 L200 74 L250 48 L300 10"></path>
+              <circle class="dot" cx="300" cy="10" r="5"></circle>
+            </svg>
+            <div class="cap">Relaunch inflection. Source: site analytics, monthly visits vs pre-relaunch baseline.</div>
+          </div>
+        </article>
+
+        <!-- CASE 3: Hilton partnership -->
+        <article class="case">
+          <div>
+            <div class="idx">Case 03</div>
+            <div class="tags"><span>Partnerships</span><span>Measurement</span><span>Executive</span></div>
+            <h3>Challenging a program with no measurable results</h3>
+            <div class="org">Hilton Worldwide</div>
+            <div class="smr">
+              <div class="row"><div class="t">Situation</div><p>I inherited a roughly $700K per year partner channel running at negative attributable ROI, next to a legacy program I suspected was trading rate down $20 to $50 a night with nothing to show for it.</p></div>
+              <div class="row"><div class="t">Move</div><p>I shifted spend to print, CTV, TV, radio, and digital retargeting under consistent branding, then ran a six-month cross-team value study to prove the legacy program's real effect before defending the change to leadership.</p></div>
+              <div class="row res"><div class="t">Result</div><p>ROI moved from 0.6:1 to 3.4:1 in eight months, the study showed +$14 average RevPAR and +154% YoY partnership revenue, and I wrote the CEO talking points for the Franchise Owners conference.</p></div>
+            </div>
+          </div>
+          <div class="viz warmtone">
+            <div class="bignum tnum">+<span class="count" data-to="154" data-dur="1200">154</span>%</div>
+            <div class="subn">YoY partnership revenue after the study.</div>
+            <div class="ba animate" data-anim="bars" style="margin-top:22px;">
+              <div class="item"><div class="lab"><span>ROI before</span><b class="tnum">0.6 : 1</b></div><div class="track"><div class="fill old" style="--w:18%"></div></div></div>
+              <div class="item"><div class="lab"><span>ROI after, 8 months</span><b class="tnum">3.4 : 1</b></div><div class="track"><div class="fill new" style="--w:100%"></div></div></div>
+            </div>
+            <div class="cap">Attributable channel ROI, presented to Americas and Commercial Services leadership.</div>
+          </div>
+        </article>
+
+        <!-- CASE 4: Capital One -->
+        <article class="case">
+          <div>
+            <div class="idx">Case 04</div>
+            <div class="tags"><span>Process</span><span>Financial services</span><span>Operations</span></div>
+            <h3>Cutting speed to market by 70% under regulation</h3>
+            <div class="org">Capital One</div>
+            <div class="smr">
+              <div class="row"><div class="t">Situation</div><p>Email and marketing tech shipped in 14 days inside a heavily regulated financial services org, too slow to react when it mattered.</p></div>
+              <div class="row"><div class="t">Move</div><p>I proposed the process fix, won leadership approval, and negotiated timelines across Legal, Data, Creative, Copywriting, and a platform partner, then trained the teams and built an under 24 hour emergency comms path.</p></div>
+              <div class="row res"><div class="t">Result</div><p>Time to market dropped from 14 days to 4, and retention rose +7.8% YoY after implementation.</p></div>
+            </div>
+          </div>
+          <div class="viz">
+            <div class="ba animate" data-anim="bars">
+              <div class="item"><div class="lab"><span>Before</span><b class="tnum">14 days</b></div><div class="track"><div class="fill old" style="--w:100%"></div></div></div>
+              <div class="item"><div class="lab"><span>After</span><b class="tnum">4 days</b></div><div class="track"><div class="fill new" style="--w:28.5%"></div></div></div>
+            </div>
+            <div class="subn" style="margin-top:20px;">A 70% cut in speed to market, with no loss of compliance review.</div>
+            <div class="cap">Source: program cycle time, before and after the workflow rebuild.</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS / RECEIPTS -->
+  <section id="results">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="chap">02 / Receipts</span>
+        <h2>More wins, with the source attached.</h2>
+        <p class="dek">A portfolio is only as good as its numbers. These are drawn straight from roles across hospitality, ecommerce, and regulated consumer, each tied to where it came from.</p>
+      </div>
+      <div class="receipts">
+        <div class="rc"><div class="n tnum">+$2.3<span style="font-size:0.5em;">MM</span></div><div class="d">YoY revenue across a regional hotel portfolio through ecommerce and event activation.</div><div class="src">Hilton · Ecommerce Manager</div></div>
+        <div class="rc"><div class="n tnum">+$<span class="count" data-to="576" data-dur="1300">576</span>K</div><div class="d">Added revenue from a +1.1% lift in booking conversion, inside six months.</div><div class="src">Hilton · Conversion optimization</div></div>
+        <div class="rc"><div class="n tnum">+$<span class="count" data-to="323" data-dur="1300">323</span>K</div><div class="d">YoY ad revenue growth from a multichannel on-site strategy for key manufacturers.</div><div class="src">Haypp Group · SEO &amp; Web</div></div>
+        <div class="rc"><div class="n tnum">#4 <span style="color:var(--faint);font-size:0.7em;">to</span> #1</div><div class="d">SEO rankings moved to the top spot through site architecture and schema work.</div><div class="src">Haypp Group · Organic search</div></div>
+        <div class="rc"><div class="n tnum">+<span class="count" data-to="156" data-dur="1200">156</span>%</div><div class="d">Account creation lift from diversified messaging to the right customer, time, and channel.</div><div class="src">Altria · Channel Innovation</div></div>
+        <div class="rc"><div class="n tnum">+<span class="count" data-to="7.8" data-dur="1200" data-dec="1">7.8</span>%</div><div class="d">YoY retention after a new emergency comms process went live in a regulated org.</div><div class="src">Capital One · Digital Operations</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section id="approach">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="chap">03 / How I work</span>
+        <h2>What I am brought in to do.</h2>
+      </div>
+      <div class="appr">
+        <div class="ac"><div class="no">A</div><h3>Decide where the money goes</h3><p>Call when to invest and when to pull back, property by property and channel by channel, then defend it with the numbers behind it.</p></div>
+        <div class="ac"><div class="no">B</div><h3>Own the platforms</h3><p>Run marketing and reporting systems end to end: integrations, capability, and the technical workflows that make them usable, in SQL, Power BI, and Tableau.</p></div>
+        <div class="ac"><div class="no">C</div><h3>Work the white space</h3><p>Diagnose problems nobody has framed yet, in regulated categories where Legal, Finance, and IS have to be in the room.</p></div>
+        <div class="ac"><div class="no">D</div><h3>Build reporting people trust</h3><p>Turn a pilot into a company-wide, self-service system with API feeds, so leadership and ownership act on one version of the truth.</p></div>
+        <div class="ac"><div class="no">E</div><h3>Design lifecycle at scale</h3><p>Automated email, SMS, push, retargeting, and direct mail with decision gates, and segmentation logic tied to real business objectives.</p></div>
+        <div class="ac"><div class="no">F</div><h3>Lead across the lines</h3><p>Lead managers and internal agencies, unify outside partners and property teams, and know when to escalate in undefined space.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PATH -->
+  <section id="path">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="chap">04 / Path</span>
+        <h2>Fifteen years, one throughline.</h2>
+        <p class="dek">Turning business goals into technical roadmaps that pay for themselves, across hospitality, financial services, and regulated consumer.</p>
+      </div>
+      <div class="path">
+        <div class="pe"><div class="yr">2026 to Now</div><div><div class="role">Senior Manager, Digital Strategy</div><div class="co">Magna Hospitality</div></div><div class="pin">56 hotels · $4.8MM</div></div>
+        <div class="pe"><div class="yr">2024 to 2026</div><div><div class="role">Digital Strategy &amp; Analytics Manager</div><div class="co">Magna Hospitality</div></div><div class="pin">+$3.4M impact</div></div>
+        <div class="pe"><div class="yr">2023 to 2024</div><div><div class="role">Sr Manager, Lifecycle Marketing &amp; Analytics</div><div class="co">Homes.com, CoStar Group</div></div><div class="pin">+3,467% visits</div></div>
+        <div class="pe"><div class="yr">2022 to 2023</div><div><div class="role">Sr Marketing &amp; Digital Analytics Manager</div><div class="co">Hilton Worldwide</div></div><div class="pin">Reporting to CMO</div></div>
+        <div class="pe"><div class="yr">2021 to 2022</div><div><div class="role">Digital Strategy &amp; Emerging Tech Manager</div><div class="co">Altria Group</div></div><div class="pin">+156% accounts</div></div>
+        <div class="pe"><div class="yr">2020 to 2021</div><div><div class="role">Ecommerce &amp; Digital Marketing Manager</div><div class="co">Haypp Group</div></div><div class="pin">SEO #4 to #1</div></div>
+        <div class="pe"><div class="yr">2017 to 2020</div><div><div class="role">Channel Marketing Manager</div><div class="co">Hilton Worldwide</div></div><div class="pin">+154% partner rev</div></div>
+        <div class="pe"><div class="yr">2015 to 2017</div><div><div class="role">Ecommerce Manager</div><div class="co">Hilton Worldwide</div></div><div class="pin">+$2.3MM YoY</div></div>
+        <div class="pe"><div class="yr">2012 to 2014</div><div><div class="role">Communications Project Manager</div><div class="co">Capital One</div></div><div class="pin">14 to 4 days</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLBOX + CREDS -->
+  <section id="toolbox">
+    <div class="wrap split">
+      <div>
+        <div class="sec-head" style="margin-bottom:28px;">
+          <span class="chap">05 / Toolbox</span>
+          <h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;">Technologies I have built on, marketed, and sold.</h2>
+        </div>
+        <div class="tools">
+          <span>Salesforce Marketing Cloud</span><span>SQL</span><span>Power BI</span><span>Tableau</span><span>Microstrategy</span><span>Google Analytics</span><span>Google Ads</span><span>Looker Studio</span><span>Twilio</span><span>AmpScript</span><span>PHP</span><span>HTML / CSS</span><span>Magento</span><span>Shopify</span><span>Klaviyo</span><span>Koddi</span><span>Adobe Analytics</span><span>JBoss EAP</span><span>Apache</span><span>AI workflows, daily</span>
+        </div>
+      </div>
+      <div>
+        <div class="cblock"><h4>Education</h4><ul><li><b>B.A., International Studies</b> (East Asian Economics &amp; Politics), UNC Chapel Hill</li></ul></div>
+        <div class="cblock"><h4>Certifications</h4><ul><li>Claude Anthropic Certified</li><li>MAICON Claude Certified</li><li>Salesforce Trailblazer, Marketing Cloud and Admin</li></ul></div>
+        <div class="cblock"><h4>Continuing education</h4><ul><li>Michigan, Model Thinking</li><li>Stanford, A Crash Course on Creativity</li><li>Vanderbilt, Leading Strategic Innovation</li></ul></div>
+        <div class="cblock"><h4>Community</h4><ul><li>Eagle Scout</li><li>Church Council and Youth Group leader, Trinity UMC</li><li>Dominion Energy Charity Classic, year 10</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <span class="chap">06 / Contact</span>
+      <h2 style="margin-top:18px;">Let's talk about the number you need to move.</h2>
+      <p class="dek">Open to Director and senior roles in digital strategy, marketing operations, and product. Recruiters welcome, reach out any time. Based in Richmond, VA.</p>
+      <div class="creach">
+        <div class="cr"><div><div class="k">Email</div><div class="v email-slot" id="emailV"><button class="cbtn reveal-email" type="button">Reveal email</button></div></div></div>
+        <div class="cr"><div><div class="k">LinkedIn</div><div class="v"><a href="https://www.linkedin.com/in/John-ScottSmith" target="_blank" rel="noopener">linkedin.com/in/John-ScottSmith</a></div></div></div>
+        <div class="cr"><div><div class="k">Résumé</div><div class="v" id="resumeV">Tailored to each role, so there is no blanket PDF. Send the job description and I will send a résumé built for it.</div></div></div>
+      </div>
+      <footer class="foot">
+        <span>John-Scott W. Smith · Digital Strategy &amp; Growth Leader</span>
+        <span>Richmond, VA · Open to director roles</span>
+      </footer>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast">Copied</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Theme toggle
+    try { var s = localStorage.getItem('jss2-theme'); if (s === 'dark' || s === 'light') root.setAttribute('data-theme', s); } catch (e) {}
+    document.getElementById('tgl').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      var dark = cur ? cur === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('jss2-theme', next); } catch (e) {}
+    });
+
+    // Toast + copy helper
+    var toast = document.getElementById('toast'), tt;
+    function flash(m) { toast.textContent = m; toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, 1600); }
+    function copyText(txt) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(function () { flash('Copied ' + txt); }, function () { flash('Select and copy'); });
+      } else { flash('Select and copy'); }
+    }
+    document.querySelectorAll('[data-copy]').forEach(function (b) {
+      b.addEventListener('click', function () { copyText(b.getAttribute('data-copy')); });
+    });
+
+    // Email reveal: address is assembled from parts at click time, so the full
+    // address never appears in the page source for scrapers to harvest.
+    var eUser = 'JohnScott.W.Smith', eDom = 'gmail.com';
+    document.querySelectorAll('.reveal-email').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var addr = eUser + '@' + eDom;
+        var slot = b.closest('.email-slot');
+        if (!slot) return;
+        slot.innerHTML = '';
+        var a = document.createElement('a');
+        a.className = 'emaillink';
+        a.href = 'mailto:' + addr;
+        a.textContent = addr;
+        slot.appendChild(a);
+        var cp = document.createElement('button');
+        cp.className = 'cbtn';
+        cp.type = 'button';
+        cp.textContent = 'Copy';
+        cp.addEventListener('click', function () { copyText(addr); });
+        slot.appendChild(cp);
+      });
+    });
+
+    // Count-up (real value already in the DOM as fallback)
+    function fmt(n, dec) { if (dec) return n.toFixed(dec); return Math.round(n).toLocaleString('en-US'); }
+    function countUp(el) {
+      var to = parseFloat(el.getAttribute('data-to'));
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var dur = parseInt(el.getAttribute('data-dur') || '1200', 10);
+      if (reduce || isNaN(to)) { el.textContent = fmt(to, dec); return; }
+      var start = null;
+      function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(to * e, dec);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      el.textContent = fmt(0, dec);
+      requestAnimationFrame(step);
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (ent) {
+        if (!ent.isIntersecting) return;
+        var el = ent.target;
+        if (el.dataset.done) { io.unobserve(el); return; }
+        el.dataset.done = '1';
+        if (el.classList.contains('count')) countUp(el);
+        else if (el.dataset.anim === 'bridge' || el.dataset.anim === 'bars') { if (!reduce) requestAnimationFrame(function () { el.classList.remove('animate'); }); else el.classList.remove('animate'); }
+        else if (el.dataset.anim === 'spark') { drawSpark(el); }
+        io.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+
+    document.querySelectorAll('.count, [data-anim]').forEach(function (el) {
+      if ((el.dataset.anim === 'bridge' || el.dataset.anim === 'bars') && reduce) el.classList.remove('animate');
+      io.observe(el);
+    });
+
+    function drawSpark(svg) {
+      var p = svg.querySelector('.ln');
+      if (!p || reduce) return;
+      var len = p.getTotalLength();
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      var dot = svg.querySelector('.dot'); if (dot) dot.style.opacity = '0';
+      requestAnimationFrame(function () { p.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(.3,.7,.2,1)'; p.style.strokeDashoffset = '0'; });
+      setTimeout(function () { if (dot) { dot.style.transition = 'opacity .3s'; dot.style.opacity = '1'; } }, 1100);
+    }
+  })();
+</script>
