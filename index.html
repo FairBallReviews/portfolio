@@ -1,4 +1,8 @@
-<title>JS Smith, Portfolio</title>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
   /* Layout: numbered-chapter scroll. Clean near-white base, tinted section bands,
@@ -239,7 +243,8 @@
   /* ---------- Approach ---------- */
   #approach { background: var(--tint-warm); }
   .appr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  @media (max-width: 820px) { .appr { grid-template-columns: 1fr; } }
+  @media (max-width: 820px) { .appr { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .appr { grid-template-columns: 1fr; } }
   .ac { border: 1px solid var(--line); border-left: 3px solid var(--line-2); border-radius: 14px; padding: 28px; background: var(--surface); }
   .ac:nth-child(3n+1) { border-left-color: var(--accent); }
   .ac:nth-child(3n+2) { border-left-color: var(--warm); }
@@ -313,7 +318,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
-
+  <title>John-Scott W. Smith, Digital Strategy & Growth Leader</title>
+  <meta name="description" content="John-Scott W. Smith, Digital Strategy and Growth Leader in Richmond, VA. Fifteen years turning business goals into technical roadmaps that pay for themselves, across hospitality, fintech, and regulated consumer.">
+  <meta name="author" content="John-Scott W. Smith">
+  <meta name="theme-color" content="#15173c">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="John-Scott W. Smith, Digital Strategy & Growth Leader">
+  <meta property="og:description" content="John-Scott W. Smith, Digital Strategy and Growth Leader in Richmond, VA. Fifteen years turning business goals into technical roadmaps that pay for themselves, across hospitality, fintech, and regulated consumer.">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Set SITE_URL in build.mjs when live to emit canonical, og:url, og:image -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"John-Scott W. Smith","jobTitle":"Senior Manager, Digital Strategy","description":"Digital strategy and growth leader with fifteen years turning business goals into technical roadmaps that pay for themselves.","address":{"@type":"PostalAddress","addressLocality":"Richmond","addressRegion":"VA","addressCountry":"US"},"sameAs":["https://www.linkedin.com/in/John-ScottSmith"],"knowsAbout":["Digital Strategy","Marketing Analytics","Lifecycle Marketing","Marketing Operations","Revenue Growth","SQL","Power BI","Tableau","Salesforce Marketing Cloud"]}</script>
+</head>
+<body>
 <header class="site">
   <div class="wrap site-in">
     <span class="brand"><span class="glyph">JS</span>John-Scott W. Smith</span>
@@ -686,3 +702,5 @@
     }
   })();
 </script>
+</body>
+</html>
